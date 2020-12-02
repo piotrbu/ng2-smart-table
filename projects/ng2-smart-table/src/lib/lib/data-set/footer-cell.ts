@@ -1,6 +1,5 @@
-import { Cell, prepareValue } from './cell';
+import { Cell } from './cell';
 export class FooterCell extends Cell {
-  protected static PREPARE = prepareValue;
   newValue: any = '';
   rowIndex = this.row.index;
   config = this.column.getFooterRowConfig(this.rowIndex);
@@ -8,7 +7,9 @@ export class FooterCell extends Cell {
     if (!this.config) {
       return '';
     }
-    return this.config.value || this.config.valuePrepareFunction && this.config.valuePrepareFunction(this.value);
+    const value = this.config.value;
+
+    return typeof value !== undefined ? value : (this.config.valuePrepareFunction && this.config.valuePrepareFunction(this.value)) || '';
   }
 
   getType(): string {
